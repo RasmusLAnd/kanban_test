@@ -95,18 +95,45 @@ function dragDrop(evt) {
         evt.preventDefault();
         let db = evt.dataTransfer.getData("text");
         console.log("dropped")
+        push(evt)
         evt.target.appendChild(document.getElementById(db));
-
+        console.log(db)
     }
 
 }
 
-/*
-function save(){
-    localStorage.setItem(index,JSON.stringify(data))
-}
+function push(evt){
+    let id = evt.dataTransfer.getData("text");
+    let newtarget = evt.target.id;
+    let currentValue = document.getElementById(id).innerText     // value
+    let fromTarget = document.getElementById(id).parentElement.id  // from id
+    data[newtarget].push(currentValue)
+    data[fromTarget].splice(data[fromTarget].indexOf(currentValue),1);
 
-function get(){
-    let data = JSON.parse(localStorage.getItem(index))
+   console.log(data[fromTarget]);
+   console.log(data[newtarget]);
 }
-*/
+// ____________ localstorage
+
+let login_but = document.querySelector('.login_button');
+
+login_but.addEventListener('click',function(login){
+    if(localStorage.getItem("index")) {
+        let temp = JSON.parse(localStorage.getItem("index"));
+        data = temp;               
+        } 
+    // if not - create an empty []
+
+    else { 
+        data = [];        
+        }; 
+    display(); 
+});
+
+let logout_but = document.querySelector('.logout_button');
+
+logout_but.addEventListener('click',function(logout){
+    localStorage.clear();   
+    localStorage.setItem(index,JSON.stringify(data))
+    console.log("logout");
+});
